@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const {client, dbName} = require('../db_connect');
+const { DB } = require('../utils/constants');
+const { client } = require('../db_connect');
 const {ObjectId} = require('mongodb');
 
 // GET /courses/
@@ -16,7 +17,7 @@ router.route('/')
 
       try {
         // query the databse
-    		const db = dbClient.db(dbName);
+    		const db = dbClient.db(DB);
     		db.collection('courses').find({...req.query}).toArray((err, docs) => {
           // send a repsonse
     			res.status(200).send({
@@ -41,7 +42,7 @@ router.route('/')
 
       try {
         const {title, duration, language, session} = req.body;
-        const db = dbClient.db(dbName);
+        const db = dbClient.db(DB);
         db.collection('courses').insertOne({
           title: title, 
           duration: duration, 
@@ -69,7 +70,7 @@ router.route('/:id')
 			}
 
       try {
-      	const db = dbClient.db(dbName);
+      	const db = dbClient.db(DB);
         const courseID = new ObjectId(req.params.id)
         db.collection('courses').findOne({_id: courseID}, (err, doc) => {
           res.status(200).send({
@@ -90,7 +91,7 @@ router.route('/:id')
         return
       }
       try {
-        const db = dbClient.db(dbName);
+        const db = dbClient.db(DB);
         const courseID = new ObjectId(req.params.id)
         db.collection('courses').deleteOne({_id: courseID}, (err, doc) => {
           res.status(200).send({
