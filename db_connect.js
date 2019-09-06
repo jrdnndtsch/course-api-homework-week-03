@@ -1,9 +1,24 @@
 const { MongoClient } = require('mongodb');
-const url = 'mongodb://localhost:27017';
-const dbname = 'hackeryouLive';
+const { URL, DB } = require('./utils/constants');
 
+const initDB = (callback) => {
+	const connected = (err, client) => {
+		if(err){
+			return callback(err);
+		}
+		_db = client.db(DB);
+		return callback(null, _db)
+	}
+	MongoClient.connect(URL, connected)
+}
+
+const  getDB = () => {
+	return _db
+}
 
 module.exports = {
-	client: () => MongoClient.connect(url),
-	dbName: dbname
+	initDB, 
+	getDB
 }
+
+

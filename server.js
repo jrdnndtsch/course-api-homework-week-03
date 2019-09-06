@@ -1,7 +1,9 @@
 'use strict';
 
-
+const { PORT } = require('./utils/constants');
 const { router: courseRoutes} = require('./routes/courses.router');
+
+const {initDB} = require('./db_connect');
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express()
@@ -11,7 +13,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use('/api/courses', courseRoutes); 
 
-app.listen(3000, () => {
-  console.log('app running on port 3000');
-});
+
+initDB((err) => {
+	app.listen(PORT, () => {
+	  console.log(`app running on port ${PORT}`);
+	});
+})
+
+
+
 
