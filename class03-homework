@@ -1,0 +1,16 @@
+// 1. courses
+// + grab one course (GET)(find)
+// + grab all courses (GET)(find)
+// + grab all course filtered with query (GET)(find)
+// + post a new course (POST)(insert)
+// + delete a course (DELETE)(remove)
+
+// create a new project
+// express for all the routing 
+// mongodb hackeryou database
+// mongo methods in order retrieve and update data from your database
+
+// compass to make sure records look as expected
+// insomnia to run requests 
+
+
