@@ -41,13 +41,10 @@ router.route('/')
       }
 
       try {
-        const {title, duration, language, session} = req.body;
+        // const {title, duration, language, session} = req.body;
         const db = dbClient.db(DB);
         db.collection('courses').insertOne({
-          title: title, 
-          duration: duration, 
-          language: language, 
-          session: session
+         ...req.body
         }, (err, record) => {
           res.status(200).send({data: {
             insertedCount: record.insertedCount, 
