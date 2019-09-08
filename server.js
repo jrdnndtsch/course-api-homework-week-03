@@ -10,7 +10,8 @@ const app = express()
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use('/api/courses', courseRoutes); 
-
+// unlike when we were interacting directly with mongodb, mongoose does some work under the hood to bind the default connection to your models and schemas
+//https://stackoverflow.com/questions/24474386/pass-mongoose-connection-to-module
 mongoose.connect(`${URL}/${DB}`)
 	.then(() => {
 		console.log(`connected to ${DB}`)
