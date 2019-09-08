@@ -9,6 +9,10 @@ const Course = require('./courses.model');
 router.route('/')
     .get(async (req, res, next) => {
       try {
+        // const newCourse = new Course({title: 'Javascript 2', duration: '8 week',language: 'HTML',session: 'Summer 19'})
+        // newCourse.findSimilar(function(err, courses){
+        //   console.log(courses)
+        // })
         const courses = await Course.find({...req.query})
         res.status(200).send({
             data: courses
@@ -23,7 +27,6 @@ router.route('/')
       try {
         const course = new Course({...req.body});
         const record = await course.save();
-        console.log(record)
         res.status(200).send({data: {
           id: record._id
         }});
@@ -37,35 +40,32 @@ router.route('/:id')
     .get(async (req, res, next) => {
 	 
       try {
-      	const db = dbClient.db(DB);
-        const courseID = new ObjectId(req.params.id)
-        db.collection('courses').findOne({_id: courseID}, (err, doc) => {
-          res.status(200).send({
-              data: doc
-          });
-          dbClient.close()
-        })
+        // with async await
+        const course = await Course.findById(req.params.id)
+        res.status(200).send({
+            data: course
+        });
+      
 
+        // with call back
+        // Course.findById(req.params.id, (err, course) => {
+        //   res.status(200).send({
+        //     data: course
+        //   })
+        // })
       } catch (e) {
           next(e);
       }
     })
 // DELETE /courses/:id    
     .delete(async (req, res, next) => {
-      const dbClient = await client()
-        .catch(err => console.log(err))
-      if(!dbClient){
-        return
-      }
       try {
-        const db = dbClient.db(DB);
-        const courseID = new ObjectId(req.params.id)
-        db.collection('courses').deleteOne({_id: courseID}, (err, doc) => {
-          res.status(200).send({
-              data: doc
-          });
-          dbClient.close()
-        })
+       const course = await Course.findByIdAndRemove(req.params.id);
+       if(course){
+        res.status(204).send('Course was deleted')
+       } else {
+        res.status(404).send('Course not found')
+       }
 
       } catch (e) {
           next(e);

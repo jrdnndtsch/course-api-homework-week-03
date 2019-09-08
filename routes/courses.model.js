@@ -8,6 +8,10 @@ const courseSchema = new Schema({
 	session: String,
 })
 
+courseSchema.method('findSimilar', function(cb) {
+	return this.model('Course').find({language: this.language}, cb)
+})
 
 
+// https://mongoosejs.com/docs/models.html
 module.exports = mongoose.model('Course', courseSchema);
